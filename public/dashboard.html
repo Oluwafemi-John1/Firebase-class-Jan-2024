@@ -20,8 +20,8 @@
 
     <div class="my-3 shadow-sm p-3">
         <h4 class="text-center my-2">Todo Application</h4>
-        <input type="text" class="form-control my-3 shadow-none" id="todo">
-        <input type="text" class="form-control my-3 shadow-none" id="todoDes">
+        <input type="text" class="form-control my-3 shadow-none" id="todo" placeholder="Todo">
+        <input type="text" class="form-control my-3 shadow-none" id="todoDes" placeholder="Todo Description">
         <button class="btn btn-info w-100" onclick="submitTodo()">Submit</button>
     </div>
 
@@ -29,6 +29,7 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"
 
         const firebaseConfig = {
             apiKey: "AIzaSyCJZ1_-jMb621HOa0z-Ajel1lhUNsucVM8",
@@ -42,6 +43,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const database = getDatabase(app)
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -70,6 +72,8 @@
         window.signO = signO
 
         const submitTodo = () => {
+            let time = new Date().toLocaleTimeString()
+            let date = new Date().toLocaleDateString()
             // alert("submitted")
             let inputOne = document.getElementById('todo').value
             let inputTwo = document.getElementById('todoDes').value
@@ -77,10 +81,23 @@
             if (inputOne === '' || inputTwo === '') {
                 alert("Fill something inside of me now")
             } else {
-                console.log(inputOne, inputTwo);
+                let obj = {time, date, inputOne, inputTwo}
+                let dbRef = ref(database, `todos/2`)
+                let saved = set(dbRef, obj)
+                if (saved) {
+                    console.log("Saved successfully");
+                } else {
+                    console.log("failed to save");
+                }
             }
         }
         window.submitTodo = submitTodo
+
+        let newRef = ref(database, `todos`)
+        onValue(newRef, (snapshot)=>{
+            let data = snapshot.val()
+            console.log(data);
+        })
     </script>
 </body>
 
