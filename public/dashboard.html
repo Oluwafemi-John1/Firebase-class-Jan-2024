@@ -16,12 +16,13 @@
     <h1 class="mt-lg-5">Welcome, I am the undefeated dashboard</h1>
     <div id="show" class="shadow-sm p-3"></div>
 
-    <button class="btn btn-danger" onclick="signO()">Sign out</button>
+    <button class="btn btn-danger my-3" onclick="signO()">Sign out</button>
 
     <div class="my-3 shadow-sm p-3">
-        <input type="text" class="form-control my-3" id="todo">
-        <input type="text" class="form-control my-3" id="todoDes">
-        <button class="btn btn-info" onclick="submitTodo()">Submit</button>
+        <h4 class="text-center my-2">Todo Application</h4>
+        <input type="text" class="form-control my-3 shadow-none" id="todo">
+        <input type="text" class="form-control my-3 shadow-none" id="todoDes">
+        <button class="btn btn-info w-100" onclick="submitTodo()">Submit</button>
     </div>
 
     <script type="module">
@@ -67,6 +68,19 @@
             .catch(()=>{console.log('user is possessed, not going out anutime soon');})
         }
         window.signO = signO
+
+        const submitTodo = () => {
+            // alert("submitted")
+            let inputOne = document.getElementById('todo').value
+            let inputTwo = document.getElementById('todoDes').value
+
+            if (inputOne === '' || inputTwo === '') {
+                alert("Fill something inside of me now")
+            } else {
+                console.log(inputOne, inputTwo);
+            }
+        }
+        window.submitTodo = submitTodo
     </script>
 </body>
 
