@@ -67,8 +67,11 @@
             const phoneNumber = document.getElementById('phoneNumber').value
             signInWithPhoneNumber(auth, phoneNumber, appVerifier)
                 .then((confirmationResult) => {
-                    window.confirmationResult = confirmationResult;
-                    console.log(window.confirmationResult + " sent");
+                    console.log("msg sent");
+                    var verificationCode = prompt('Please enter the verification code sent to your mobile phone:');
+                    return confirmationResult.confirm(verificationCode);
+                }).then((result)=>{
+                    console.log("successfully authenticated", + result.user);
                 }).catch((error) => {
                     console.log("error: " + error);
                 });
