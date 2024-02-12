@@ -71,7 +71,7 @@
                     var verificationCode = prompt('Please enter the verification code sent to your mobile phone:');
                     return confirmationResult.confirm(verificationCode);
                 }).then((result)=>{
-                    console.log("successfully authenticated", + result.user);
+                    console.log("successfully authenticated", + result);
                 }).catch((error) => {
                     console.log("error: " + error);
                 });
