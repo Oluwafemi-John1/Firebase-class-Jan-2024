@@ -14,8 +14,17 @@
 
 <body>
     <button onclick="signG()" class="btn btn-secondary m-5">Sign in with Google</button>
-    <input type="text" id="phoneNumber" inputmode="numeric" class="form-control w-50 shadow-none" placeholder="phone number">
+    <input type="text" id="phoneNumber" class="form-control w-50 shadow-none" placeholder="phone number">
     <button onclick="signP()" class="btn btn-success m-5" id="sign-in-button">Sign in with Phone Number</button>
+
+    <label for="">
+        Open front camera
+        <input type="file" name="" id="selfie" capture="user">
+    </label>
+    <label for="">
+        Open back camera
+        <input type="file" name="" id="photo" capture="environment">
+    </label>
 
     <script type="module">
         // Import the functions you need from the SDKs you need
