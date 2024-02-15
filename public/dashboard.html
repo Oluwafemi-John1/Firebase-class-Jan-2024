@@ -22,7 +22,10 @@
         <h4 class="text-center my-2">Todo Application</h4>
         <input type="text" class="form-control my-3 shadow-none" id="todo" placeholder="Todo">
         <input type="text" class="form-control my-3 shadow-none" id="todoDes" placeholder="Todo Description">
-        <button class="btn btn-info w-100" onclick="submitTodo()">Submit</button>
+        <input type="file" class="form-control my-3" id="filey">
+
+        <button class="btn btn-info w-100 my-3" onclick="submitTodo()">Submit</button>
+        <button class="btn btn-success w-100 my-3" onclick="submitFile()">Submit file</button>
     </div>
     <div class="my-3 shadow-sm p-2" id="showy"></div>
 
@@ -31,6 +34,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"
+        import { getStorage, ref as stref, uploadBytesResumable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js"
 
         const firebaseConfig = {
             apiKey: "AIzaSyCJZ1_-jMb621HOa0z-Ajel1lhUNsucVM8",
@@ -45,6 +49,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app)
+        const storage = getStorage();
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -67,8 +72,8 @@
 
         const signO = () => {
             signOut(auth)
-            .then(()=>{console.log('out with you, o devilish user');})
-            .catch(()=>{console.log('user is possessed, not going out anutime soon');})
+                .then(() => { console.log('out with you, o devilish user'); })
+                .catch(() => { console.log('user is possessed, not going out anutime soon'); })
         }
         window.signO = signO
 
@@ -82,7 +87,7 @@
             if (inputOne === '' || inputTwo === '') {
                 alert("Fill something inside of me now")
             } else {
-                let obj = {time, date, inputOne, inputTwo}
+                let obj = { time, date, inputOne, inputTwo }
                 let dbRef = ref(database, `todos/2`)
                 let saved = set(dbRef, obj)
                 if (saved) {
@@ -95,10 +100,10 @@
         window.submitTodo = submitTodo
 
         let newRef = ref(database, `todos`)
-        onValue(newRef, (snapshot)=>{
+        onValue(newRef, (snapshot) => {
             let data = snapshot.val()
             console.log(data);
-            data.map((todo,index)=>{
+            data.map((todo, index) => {
                 showy.innerHTML += `
                     <h5>${todo.inputOne}</h5>
                     <h5>${todo.inputTwo}</h5>
@@ -107,6 +112,22 @@
                 `
             })
         })
+
+        const submitFile = () => {
+            // alert("Na file I be o")
+            let incomingFile = document.getElementById('filey').files[0]
+            console.log(incomingFile);
+            onAuthStateChanged(auth, (user)=>{
+                let filedUser = user.displayName
+                console.log(filedUser);
+                let storageRef = stref(storage, `${filedUser}/${incomingFile.name}`)
+                let task = uploadBytesResumable(storageRef, incomingFile)
+                if(task) {
+                    console.log('saved');
+                }
+            })
+        }
+        window.submitFile = submitFile
     </script>
 </body>
 
